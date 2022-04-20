@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Add User</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+</head>
+<body>
+
+<div>
+    <h3>New User</h3>
+    <div class="card-body">
+        <!--/*@thymesVar id="user" type="crud.model.User"*/-->
+        <form action="new" th:method="POST" th:object="${user}">
+            <p>Name: <input type="text" th:value="*{firstName}" name="firstName" value="" /></p>
+            <p>Last Name: <input type="text" th:value="*{lastName}" name="lastName" value="" /></p>
+            <p>E-Mail: <input type="text" th:value="*{email}" name="email" value="" /></p>
+
+            <input type="submit" value="Add User"/> <input type="reset" value="Reset"/>
+        </form>
+    </div>
+</div>
+<a href="/">to main page</a>
+</body>
+</html>
