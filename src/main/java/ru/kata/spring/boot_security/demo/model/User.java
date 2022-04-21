@@ -30,6 +30,9 @@ public class User{
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "age")
+    private int age;
+
     @Column(name = "email")
     private String email;
 
@@ -37,12 +40,13 @@ public class User{
     }
 
     public User(String username, String password, List<Role> roles,
-                String firstName, String lastName, String email) {
+                String firstName, String lastName, int age, String email) {
         this.username = username;
         this.password = password;
         this.roles = roles;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
     }
 
@@ -100,6 +104,14 @@ public class User{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public boolean getStatus() {

@@ -2,13 +2,18 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -16,15 +21,20 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping(value = "")
-    public String showUsers(Model model) {
+    public String showUsers(Principal principal, Model model) {
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("currentuser", userService.loadUserByUsername(principal.getName()));
+//        model.addAttribute("currentauth", ((Authentication) principal).getAuthorities());
+        model.addAttribute("roles", roleService.findAll());
         return "admin";
     }
 

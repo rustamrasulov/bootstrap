@@ -37,7 +37,6 @@ public class UserServiceImp implements UserDetailsService, UserService {
                 .User(user.getUsername(),user.getPassword(),getAuthorities(user));
     }
 
-
     private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
         String[] userRoles = user.getRoles().stream().map(Role::getRoleName).toArray(String[]::new);
         return AuthorityUtils.createAuthorityList(userRoles);
@@ -67,4 +66,5 @@ public class UserServiceImp implements UserDetailsService, UserService {
     public List<User> findAll() {
         return userDao.findAll();
     }
+
 }

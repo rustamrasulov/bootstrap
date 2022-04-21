@@ -27,15 +27,15 @@ public class UserPostConstruct {
 
     @PostConstruct
     private void postConstruct() {
-        roleService.saveRole(new Role(1L,"ROLE_ADMIN"));
-        roleService.saveRole(new Role(2L,"ROLE_USER"));
+        roleService.saveRole(new Role(1L,"ADMIN"));
+        roleService.saveRole(new Role(2L,"USER"));
         userService.saveUser(new User("admin", "$2a$12$piJQL/Gjt/H0IybvwiNcMeHb9kwz6XxuGtQrpSbHvSOpUAJPDhHS2",
                 new ArrayList<>(roleService.findAll()),
-                "Vasya", "Pupkin","pupkin@mail.ru"));
+                "Vasya", "Pupkin",35,"pupkin@mail.ru"));
         userService.saveUser(new User("user", "$2a$12$IKsa6sqRgxdZMbtuVmyHtOZvU0p8nfbuUaWKs8nfCKZw6vSDVGKWO",
                 roleService.findAll().stream().filter(e -> e.getRoleName()
                         .contains("USER")).collect(Collectors.toList()),
-                "Merlin", "Monroe", "merlin@aol.com"));
+                "Merlin", "Monroe", 28, "merlin@aol.com"));
 
 
 
