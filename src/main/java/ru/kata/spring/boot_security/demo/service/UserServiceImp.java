@@ -3,23 +3,27 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service("userService")
 @Transactional
 public class UserServiceImp implements UserDetailsService, UserService {
 
-    private final UserDao userDao;
+    private static UserDao userDao;
 
     @Autowired
     public UserServiceImp(UserDao userDao) {
@@ -37,9 +41,17 @@ public class UserServiceImp implements UserDetailsService, UserService {
                 .User(user.getUsername(),user.getPassword(),getAuthorities(user));
     }
 
-    private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
+    public Collection<? extends GrantedAuthority> getAuthorities(User user) {
         String[] userRoles = user.getRoles().stream().map(Role::getRoleName).toArray(String[]::new);
         return AuthorityUtils.createAuthorityList(userRoles);
+//        List<Role> roles = user.getRoles();
+//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//
+//        for (Role role : roles) {
+//            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+//        }
+//
+//        return authorities;
     }
 
     @Override

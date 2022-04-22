@@ -33,6 +33,7 @@ public class AdminController {
     public String showUsers(Principal principal, Model model) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("currentuser", userService.loadUserByUsername(principal.getName()));
+        model.addAttribute("principal", principal);
 //        model.addAttribute("currentauth", ((Authentication) principal).getAuthorities());
         model.addAttribute("roles", roleService.findAll());
         return "admin";
