@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,6 +15,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -30,25 +32,26 @@ public class AdminController {
     }
 
     @GetMapping(value = "")
-    public String showUsers(Principal principal, Model model) {
+    public String showUsers(@AuthenticationPrincipal UserDetails user, Model model) {
         model.addAttribute("users", userService.findAll());
-        model.addAttribute("currentuser", userService.loadUserByUsername(principal.getName()));
-        model.addAttribute("principal", principal);
-//        model.addAttribute("currentauth", ((Authentication) principal).getAuthorities());
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("currentuser", user);
         return "admin";
     }
 
     @GetMapping(value = "new")
-    public String newUser (User user) {
+    public String newUser (Principal principal, Model model) {
+        model.addAttribute("currentuser", userService.loadUserByUsername(principal.getName()));
+        model.addAttribute("roles", roleService.findAll());
         return "/new";
     }
 
     @PostMapping(value = "/new")
-    public String saveNewUser (User user, BindingResult result) {
+    public String saveNewUser (@ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()) {
             return "redirect:/new";
         }
+        getUserRoles(user);
+        System.out.println(user);
         userService.saveUser(user);
         return "redirect:/admin";
     }
@@ -74,5 +77,10 @@ public class AdminController {
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "redirect:/admin";
+    }
+
+    private void getUserRoles(User user) {
+        user.setRoles(user.getRoles().stream()
+                .map(role -> roleService.getById(role.getId())).collect(Collectors.toList()));
     }
 }

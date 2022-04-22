@@ -44,6 +44,7 @@ public class UserServiceImp implements UserDetailsService, UserService {
     public Collection<? extends GrantedAuthority> getAuthorities(User user) {
         String[] userRoles = user.getRoles().stream().map(Role::getRoleName).toArray(String[]::new);
         return AuthorityUtils.createAuthorityList(userRoles);
+
 //        List<Role> roles = user.getRoles();
 //        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 //
