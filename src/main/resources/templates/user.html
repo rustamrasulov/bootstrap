@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>User List</title>
+    <title>User page</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet"
@@ -14,51 +15,77 @@
 
 <body>
 
-<div align="center">
+<nav class="navbar navbar-dark bg-dark text-white">
+    <div class="container-fluid">
+        <a class="navbar-brand">
+            <b><span class="align-middle" th:text="${currentuser.username}"></span></b>
+            <span class="align-middle">with roles:</span>
 
-    <div>
-<!--        <form th:method="GET" th:action="@{/admin/new}">-->
-<!--            <input type="submit" value="Add user">-->
-<!--        </form>-->
-        <h2>Users List</h2>
-        <table border="1" cellpadding="5">
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Last Name</th>
-                <th>E-Mail</th>
-<!--                <th>Actions</th>-->
-            </tr>
-
-            <th:block th:each="user : ${user}">
-<!--                <tr>-->
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.firstName}"></td>
-                    <td th:text="${user.lastName}"></td>
-                    <td th:text="${user.email}"></td>
-<!--                    <td>-->
-<!--                        <div>-->
-<!--                            <table>-->
-<!--                                <tr>-->
-<!--&lt;!&ndash;                                    <th><form th:method="GET" th:action="@{/admin/edit/{id}(id=${user.id})}">&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <input type="submit" value="Edit">&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </form></th>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    <th><form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}">&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <input type="submit" value="Delete">&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </form></th>&ndash;&gt;-->
-<!--                                </tr>-->
-<!--                            </table>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                </tr>-->
+            <th:block th:each="auth : ${currentuser.authorities}">
+                <b><span class="align-middle" th:text="${auth.authority}"></span></b>
             </th:block>
+        </a>
 
-        </table>
+        <form class="d-flex" action="/logout" method="post">
+            <button type="submit" class="btn btn-dark text-secondary">Logout</button>
+        </form>
+
     </div>
-    <form action="/logout" method="post">
-        <button type="submit">Logout</button>
-    </form>
+</nav>
 
+
+<div class="container-fluid">
+    <div class="row row-cols-2 text-black">
+        <div class="col-1">
+            <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" href="/user" sec:authorize="(hasAnyAuthority('ADMIN', 'USER'))"
+                   role="tab"
+                   aria-controls="v-pills-home" aria-selected="true">User</a>
+            </div>
+            <!--            <table>-->
+            <!--                <tr>-->
+            <!--                    <th>-->
+            <!--                        <form th:method="GET" th:action="@{/admin/new}">-->
+            <!--                            <input type="submit" value="Add user">-->
+            <!--                        </form>-->
+            <!--                    </th>-->
+            <!--                    <th>-->
+            <!--                        <form action="/user" method="get">-->
+            <!--                            <button type="submit">My info</button>-->
+            <!--                        </form>-->
+            <!--                    </th>-->
+            <!--                </tr>-->
+            <!--            </table>-->
+        </div>
+        <div class="col-11">
+            <h2>User information page</h2>
+            <table border="1" cellpadding="5">
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>E-Mail</th>
+                    <th>Role</th>
+                </tr>
+
+                    <tr>
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.firstName}"></td>
+                        <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.age}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td>
+                            <th:block th:each="role : ${user.roles}">
+                                <span class="align-middle" th:text="${role.authority}"></span>
+                                <!--                            <span>&nbsp</span>-->
+                            </th:block>
+                        </td>
+                    </tr>
+
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>

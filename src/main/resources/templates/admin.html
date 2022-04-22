@@ -15,84 +15,80 @@
 
 <body>
 
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container navbar-brand text-white">
-        <p class="text-white">
+<nav class="navbar navbar-dark bg-dark text-white">
+    <div class="container-fluid">
+        <a class="navbar-brand">
             <b><span class="align-middle" th:text="${currentuser.username}"></span></b>
             <span class="align-middle">with roles:</span>
-            <b>
-                <th:block th:each="auth : ${currentuser.authorities}">
-                    <span class="align-middle" th:text="${auth.authority}"></span>
-                </th:block>
-            </b>
-        </p>
-        <form action="/logout" method="post">
+
+            <th:block th:each="auth : ${currentuser.authorities}">
+                <b><span class="align-middle" th:text="${auth.authority}"></span></b>
+            </th:block>
+        </a>
+
+        <form class="d-flex" action="/logout" method="post">
             <button type="submit" class="btn btn-dark text-secondary">Logout</button>
         </form>
+
     </div>
 </nav>
 
 
-<div class="row row-cols-2 text-black">
-    <div class="col-2">
-        <table>
-            <tr>
-                <th>
-                    <form th:method="GET" th:action="@{/admin/new}">
-                        <input type="submit" value="Add user">
-                    </form>
-                </th>
-                <th>
-                    <form action="/user" method="get">
-                        <button type="submit">My info</button>
-                    </form>
-                </th>
-            </tr>
-        </table>
-    </div>
-    <div class="col-8">
-        <h2>Users List</h2>
-        <table border="1" cellpadding="5">
-            <tr>
-                <th>Id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Age</th>
-                <th>E-Mail</th>
-                <th>Role</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-
-            <th:block th:each="user : ${users}">
+<div class="container-fluid">
+    <div class="row row-cols-2 text-black">
+        <div class="col-1">
+            <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" href="/admin" sec:authorize="hasAuthority('ADMIN')" role="tab"
+                   aria-controls="v-pills-home" aria-selected="true">Admin</a>
+                <a class="nav-link" href="/user" sec:authorize="(hasAnyAuthority('ADMIN', 'USER'))"
+                   role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false">User</a>
+            </div>
+        </div>
+        <div class="col-11">
+            <h2>Users List</h2>
+            <table border="1" cellpadding="5">
                 <tr>
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.firstName}"></td>
-                    <td th:text="${user.lastName}"></td>
-                    <td th:text="${user.age}"></td>
-                    <td th:text="${user.email}"></td>
-                    <td>
-                        <th:block th:each="role : ${user.roles}">
-                            <span class="align-middle" th:text="${role.authority}"></span>
-                            <!--                            <span>&nbsp</span>-->
-                        </th:block>
-                    </td>
-                    <td>
-                        <form th:method="GET" th:action="@{/admin/edit/{id}(id=${user.id})}">
-                            <input type="submit" value="Edit">
-                        </form>
-                    </td>
-                    <td>
-                        <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}">
-                            <input type="submit" value="Delete">
-                        </form>
-                    </td>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>E-Mail</th>
+                    <th>Role</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
-            </th:block>
 
-        </table>
+                <th:block th:each="user : ${users}">
+                    <tr>
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.firstName}"></td>
+                        <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.age}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td>
+                            <th:block th:each="role : ${user.roles}">
+                                <span class="align-middle" th:text="${role.authority}"></span>
+                                <!--                            <span>&nbsp</span>-->
+                            </th:block>
+                        </td>
+                        <td>
+                            <form th:method="GET" th:action="@{/admin/edit/{id}(id=${user.id})}">
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+
+            </table>
+        </div>
     </div>
 </div>
-</div>
+
 </body>
 </html>
