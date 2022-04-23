@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,7 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasRole('ROLE_USER')")
+@PreAuthorize("hasAuthority('USER')")
 public class UserController {
 
     private final UserService userService;
@@ -24,9 +26,9 @@ public class UserController {
     }
 
     @GetMapping(value = "")
-    public String getCurrentUser(Principal principal, ModelMap model) {
-        model.addAttribute("user", userService.findByUsername(userService.loadUserByUsername(principal.getName()).getUsername()));
-        model.addAttribute("currentuser", userService.loadUserByUsername(principal.getName()));
+    public String getCurrentUser(@AuthenticationPrincipal UserDetails user, ModelMap model) {
+        model.addAttribute("user", userService.findByUsername(user.getUsername()));
+        model.addAttribute("currentuser", user);
         return "user";
     }
 }

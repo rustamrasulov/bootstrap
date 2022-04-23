@@ -2,9 +2,9 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,21 +14,22 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/admin")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "")
@@ -38,20 +39,17 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping(value = "new")
-    public String newUser (Principal principal, Model model) {
-        model.addAttribute("currentuser", userService.loadUserByUsername(principal.getName()));
+    @GetMapping(value = "/new")
+    public String newUser (@AuthenticationPrincipal UserDetails user, Model model) {
+        model.addAttribute("currentuser", user);
         model.addAttribute("roles", roleService.findAll());
         return "/new";
     }
 
     @PostMapping(value = "/new")
     public String saveNewUser (@ModelAttribute("user") User user, BindingResult result) {
-        if (result.hasErrors()) {
-            return "redirect:/new";
-        }
         getUserRoles(user);
-        System.out.println(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/admin";
     }

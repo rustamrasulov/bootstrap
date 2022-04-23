@@ -76,13 +76,15 @@
                     <!--</div>-->
                     <!--<a href="/">to main page</a>-->
                     <div class="col-md bg-white border">
-                        <!--/*@thymesVar id="user" type="crud.model.User"*/-->
+                        <!--/*@thymesVar id="user" type="ru.kata.spring.boot_security.demo.model.User"*/-->
                         <form action="new" th:method="POST" th:object="${user}">
                             <label for="firstName"><b>Name</b></label>
-                            <input name="firstName" value="" th:type="text" class="form-control" id="firstName" required/>
+                            <input name="firstName" value="" th:type="text" class="form-control" id="firstName"
+                                   required/>
                             <br>
                             <label for="lastName"><b>Surname</b></label>
-                            <input th:name="lastName" value="" th:type="text" class="form-control" id="lastName" required/>
+                            <input th:name="lastName" value="" th:type="text" class="form-control" id="lastName"
+                                   required/>
                             <br>
                             <label for="age"><b>Age</b></label>
                             <input th:name="age" value="" th:type="number" class="form-control" id="age"/>
@@ -91,7 +93,8 @@
                             <input th:name="email" value="" th:type="text" class="form-control" id="email" required/>
                             <br>
                             <label for="username"><b>Login</b></label>
-                            <input th:name="username" value="" th:type="text" class="form-control" id="username" required/>
+                            <input th:name="username" value="" th:type="text" class="form-control" id="username"
+                                   required/>
                             <br>
                             <label for="password"><b>Password</b></label>
                             <input th:name="password" value="" th:type="password" class="form-control" id="password"/>
@@ -99,14 +102,15 @@
                             <label for="roles"><b>Role</b></label>
                             <select multiple class="form-control form-control-sm" id="roles" name="roles" size="2"
                                     required>
-                                <option th:each="role: ${roles}" th:value="${role.authority}"
-                                        th:selected="${currentuser.authorities.contains(role)}">
-                                    <th:block th:text="${role.authority}">
-                                    </th:block>
+                                <option th:each="role: ${roles}"
+                                        th:text="${role.roleName}"
+                                        th:value="${role.id}"
+                                        th:selected="${role.id}">
                                 </option>
                             </select>
                             <br>
-                            <button th:type="submit" class="btn btn-success btn-lg" value="Add new user"></button>
+                            <button th:type="submit" class="btn btn-success btn-lg" value="Add new user">Add new user
+                            </button>
                         </form>
                     </div>
                 </div>
