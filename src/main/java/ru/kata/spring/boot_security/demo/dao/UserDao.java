@@ -13,6 +13,4 @@ import java.util.Set;
 @Repository
 public interface UserDao extends JpaRepository<User, Long> {
     User findByUsername(String username);
-
-
 }

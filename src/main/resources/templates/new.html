@@ -42,6 +42,7 @@
                    aria-controls="v-pills-profile" aria-selected="false">User</a>
             </div>
         </div>
+
         <div class="col-10">
             <div class="container-fluid">
                 <h1>Admin panel</h1>
@@ -55,49 +56,34 @@
                             <h4>Add new user</h4>
                         </div>
                     </div>
-                </div>
-
-
-                <div class="col bg-white border">
-
-
-                    <!--<div>-->
-                    <!--    <h3>New User</h3>-->
-                    <!--    <div class="card-body">-->
-
-                    <!--        <form action="new" th:method="POST" th:object="${user}">-->
-                    <!--            <p>Name: <input type="text" th:value="*{firstName}" name="firstName" value="" /></p>-->
-                    <!--            <p>Last Name: <input type="text" th:value="*{lastName}" name="lastName" value="" /></p>-->
-                    <!--            <p>E-Mail: <input type="text" th:value="*{email}" name="email" value="" /></p>-->
-
-                    <!--            <input type="submit" value="Add User"/> <input type="reset" value="Reset"/>-->
-                    <!--        </form>-->
-                    <!--    </div>-->
-                    <!--</div>-->
-                    <!--<a href="/">to main page</a>-->
-                    <div class="col-md bg-white border">
+                    <!--                    <div class="col-md bg-white border">-->
+                    <div class="card-body" align="center">
                         <!--/*@thymesVar id="user" type="ru.kata.spring.boot_security.demo.model.User"*/-->
-                        <form action="new" th:method="POST" th:object="${user}">
-                            <label for="firstName"><b>Name</b></label>
+                        <form align="center" class="row justify-content-md-center col-md-5"
+                              action="new" th:method="POST" th:object="${user}">
+                            <label for="firstName"><b>First name</b></label>
                             <input name="firstName" value="" th:type="text" class="form-control" id="firstName"
-                                   required/>
+                                   required />
                             <br>
-                            <label for="lastName"><b>Surname</b></label>
+                            <label for="lastName"><b>Last name</b></label>
                             <input th:name="lastName" value="" th:type="text" class="form-control" id="lastName"
-                                   required/>
+                                   required />
                             <br>
                             <label for="age"><b>Age</b></label>
-                            <input th:name="age" value="" th:type="number" class="form-control" id="age"/>
+                            <input th:name="age" value="" th:type="number" class="form-control text-right"
+                                   id="age"/>
                             <br>
                             <label for="email"><b>Email</b></label>
-                            <input th:name="email" value="" th:type="text" class="form-control" id="email" required/>
+                            <input th:name="email" value="" th:type="text" class="form-control" id="email"
+                                   required/>
                             <br>
                             <label for="username"><b>Login</b></label>
                             <input th:name="username" value="" th:type="text" class="form-control" id="username"
                                    required/>
                             <br>
                             <label for="password"><b>Password</b></label>
-                            <input th:name="password" value="" th:type="password" class="form-control" id="password"/>
+                            <input th:name="password" value="" th:type="password" class="form-control"
+                                   id="password"/>
                             <br>
                             <label for="roles"><b>Role</b></label>
                             <select multiple class="form-control form-control-sm" id="roles" name="roles" size="2"
@@ -108,8 +94,9 @@
                                         th:selected="${role.id}">
                                 </option>
                             </select>
-                            <br>
-                            <button th:type="submit" class="btn btn-success btn-lg" value="Add new user">Add new user
+                            <br />
+                            <button th:type="submit" class="btn-sm btn-success"
+                                    value="Add new user">Add new user
                             </button>
                         </form>
                     </div>
