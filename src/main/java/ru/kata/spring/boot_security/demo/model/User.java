@@ -39,6 +39,8 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    private Boolean isTrue = true;
+
     public User() {
     }
 
@@ -59,22 +61,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isTrue;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isTrue;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return isTrue;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isTrue;
     }
 
     public void setUsername(String username) {

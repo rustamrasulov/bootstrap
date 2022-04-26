@@ -17,7 +17,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import java.util.Collection;
 import java.util.List;
 
-@Service("userService")
+@Service
 @Transactional
 public class UserServiceImp implements UserService {
 
@@ -26,31 +26,6 @@ public class UserServiceImp implements UserService {
     @Autowired
     public UserServiceImp(UserDao userDao) {
         this.userDao = userDao;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUsername(username);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User doesn't exist!");
-        }
-        return new org.springframework.security.core.userdetails
-                .User(user.getUsername(), user.getPassword(), getAuthorities(user));
-    }
-
-    public Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        String[] userRoles = user.getRoles().stream().map(Role::getRoleName).toArray(String[]::new);
-        return AuthorityUtils.createAuthorityList(userRoles);
-
-//        List<Role> roles = user.getRoles();
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//
-//        for (Role role : roles) {
-//            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-//        }
-//
-//        return authorities;
     }
 
     @Override
