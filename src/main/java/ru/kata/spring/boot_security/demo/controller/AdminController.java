@@ -36,6 +36,7 @@ public class AdminController {
     public String showUsers(@AuthenticationPrincipal UserDetails user, Model model) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("currentuser", user);
+        model.addAttribute("roles", roleService.findAll());
         return "admin";
     }
 
@@ -54,19 +55,23 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/edit/{id}")
-    public String findUser(@PathVariable("id") Long id, ModelMap model) {
-        User user = userService.getById(id);
-        model.addAttribute("user", user);
-        return "/edit";
-    }
+//    @GetMapping(value = "/edit/{id}")
+//    public String findUser(@PathVariable("id") Long id, ModelMap model) {
+//        User user = userService.getById(id);
+//        model.addAttribute("user", user);
+//        model.addAttribute("roles", roleService.findAll());
+//        return "/edit";
+//    }
 
     @PutMapping(value = "/edit/{id}")
-    public String updateUser(@PathVariable("id") Long id, User user, BindingResult result) {
-        if (result.hasErrors()) {
-            return "redirect:/edit/{id}";
-        }
-
+//    public String updateUser(@PathVariable("id") Long id, User user, BindingResult result) {
+        public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User user) {
+//        if (result.hasErrors()) {
+//            return "redirect:/edit/{id}";
+//        }
+        getUserRoles(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.err.println(user);
         userService.saveUser(user);
         return "redirect:/admin";
     }
