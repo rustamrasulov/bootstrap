@@ -26,18 +26,16 @@ public class UserPostConstruct {
     private void postConstruct() {
         roleService.saveRole(new Role(1L, "ADMIN"));
         roleService.saveRole(new Role(2L, "USER"));
-        userService.saveUser(new User("admin", "$2a$12$piJQL/Gjt/H0IybvwiNcMeHb9kwz6XxuGtQrpSbHvSOpUAJPDhHS2",
+        userService.saveUser(new User("admin@mail.ru", "$2a$12$piJQL/Gjt/H0IybvwiNcMeHb9kwz6XxuGtQrpSbHvSOpUAJPDhHS2",
                 new ArrayList<>(roleService.findAll()),
-                "Vasya", "Pupkin", 35, "pupkin@mail.ru"));
-        userService.saveUser(new User("user", "$2a$12$IKsa6sqRgxdZMbtuVmyHtOZvU0p8nfbuUaWKs8nfCKZw6vSDVGKWO",
+                "Vasya", "Pupkin", 35));
+        userService.saveUser(new User("user@mail.ru", "$2a$12$IKsa6sqRgxdZMbtuVmyHtOZvU0p8nfbuUaWKs8nfCKZw6vSDVGKWO",
                 roleService.findAll().stream().filter(e -> e.getRoleName()
                         .contains("USER")).collect(Collectors.toList()),
-                "Merlin", "Monroe", 28, "merlin@aol.com"));
-        userService.saveUser(new User("test", "$2a$12$IKsa6sqRgxdZMbtuVmyHtOZvU0p8nfbuUaWKs8nfCKZw6vSDVGKWO",
+                "Merlin", "Monroe", 28));
+        userService.saveUser(new User("test@mail.ru", "$2a$12$CXU5aVl1S00bW8LfJ30WMujLybJcjiDIJZD11lnqi6DGYCXV3auyy",
                 roleService.findAll().stream().filter(e -> e.getRoleName()
                         .contains("USER")).collect(Collectors.toList()),
-                "test", "test", 28, "test@mail.com"));
-
-
+                "Test", "Testov", 99));
     }
 }

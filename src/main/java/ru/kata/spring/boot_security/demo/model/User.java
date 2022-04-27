@@ -4,7 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -14,9 +19,12 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username", unique = true)
+    @Email
+    @NotEmpty
     private String username;
 
     @Column(name = "password")
+    @NotEmpty
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -28,31 +36,34 @@ public class User implements UserDetails {
     private List<Role> roles = new ArrayList<>();
 
     @Column(name = "first_name")
+    @NotEmpty
     private String firstName;
 
     @Column(name = "last_name")
+    @NotEmpty
     private String lastName;
 
     @Column(name = "age")
     private int age;
 
-    @Column(name = "email")
-    private String email;
+//    @Column(name = "email")
+//    private String email;
 
     private Boolean isTrue = true;
 
     public User() {
     }
 
+    //    public User(String username, String password, List<Role> roles,
+//                String firstName, String lastName, int age, String email) {
     public User(String username, String password, List<Role> roles,
-                String firstName, String lastName, int age, String email) {
+                String firstName, String lastName, int age) {
         this.username = username;
         this.password = password;
         this.roles = roles;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.email = email;
     }
 
     public String getUsername() {
@@ -121,12 +132,12 @@ public class User implements UserDetails {
     }
 
     public String getEmail() {
-        return email;
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 
     public Long getId() {
         return id;
@@ -153,12 +164,17 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id) && username.equals(user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email);
+        return id.equals(user.id)
+                && username.equals(user.username)
+                && Objects.equals(password, user.password)
+                && Objects.equals(roles, user.roles)
+                && Objects.equals(firstName, user.firstName)
+                && Objects.equals(lastName, user.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, roles, firstName, lastName, email);
+        return Objects.hash(id, username, password, roles, firstName, lastName);
     }
 
     @Override
@@ -170,7 +186,6 @@ public class User implements UserDetails {
                 ", roles=" + roles +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
                 '}';
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -49,6 +48,9 @@ public class AdminController {
 
     @PostMapping(value = "/new")
     public String saveNewUser (@ModelAttribute("user") User user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/new";
+        }
         getUserRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
@@ -65,10 +67,10 @@ public class AdminController {
 
     @PutMapping(value = "/edit/{id}")
 //    public String updateUser(@PathVariable("id") Long id, User user, BindingResult result) {
-        public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User user) {
-//        if (result.hasErrors()) {
-//            return "redirect:/edit/{id}";
-//        }
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/edit/{id}";
+        }
         getUserRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         System.err.println(user);
