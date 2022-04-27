@@ -83,15 +83,14 @@
                             <br>
                             <label for="password"><b>Password</b></label>
                             <input th:name="password" value="" th:type="password" class="form-control"
-                                   id="password"/>
+                                   id="password" required/>
                             <br>
                             <label for="roles"><b>Role</b></label>
                             <select multiple class="form-control form-control-sm" id="roles" name="roles" size="2"
                                     required>
                                 <option th:each="role: ${roles}"
                                         th:text="${role.roleName}"
-                                        th:value="${role.id}"
-                                        th:selected="${role.id}">
+                                        th:value="${role.id}">
                                 </option>
                             </select>
                             <br />
