@@ -9,13 +9,10 @@
     <title>Admin panel</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
           integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet"
           crossorigin="anonymous"/>
 </head>
-
 <body>
-
 <nav class="navbar navbar-dark bg-dark text-white">
     <div class="container-fluid">
         <a class="navbar-brand">
@@ -25,14 +22,11 @@
                 <b><span class="align-middle" th:text="${auth.authority}"></span></b>
             </th:block>
         </a>
-
         <form class="d-flex" action="/logout" method="post">
             <button type="submit" class="btn btn-dark text-secondary">Logout</button>
         </form>
-
     </div>
 </nav>
-
 <div class="container-fluid">
     <div class="row row-cols-2 text-black">
         <div class="col-2 bg-white">
@@ -43,7 +37,6 @@
                    aria-controls="v-pills-profile" aria-selected="false">User</a>
             </div>
         </div>
-
         <div class="col-10">
             <div class="container-fluid">
                 <h1>Admin panel</h1>
@@ -57,7 +50,6 @@
                             <h4>Add new user</h4>
                         </div>
                     </div>
-                    <!--                    <div class="col-md bg-white border">-->
                     <div class="card-body" align="center">
                         <!--/*@thymesVar id="user" type="ru.kata.spring.boot_security.demo.model.User"*/-->
                         <form align="center" class="row justify-content-md-center col-md-5"
@@ -74,10 +66,6 @@
                             <input th:name="age" value="" th:type="number" class="form-control text-right"
                                    id="age"/>
                             <br>
-                            <!--                            <label for="email"><b>Email</b></label>-->
-                            <!--                            <input th:name="email" value="" th:type="text" class="form-control" id="email"-->
-                            <!--                                   required/>-->
-                            <!--                            <br>-->
                             <label for="username"><b>Email</b></label>
                             <input th:name="username" value="" th:type="text" class="form-control" id="username"
                                    required/>
@@ -105,7 +93,5 @@
         </div>
     </div>
 </div>
-
-
 </body>
 </html>
