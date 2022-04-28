@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
@@ -13,15 +14,33 @@ import java.util.List;
 public class UserServiceImp implements UserService {
 
     private static UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserServiceImp(UserDao userDao) {
+    public UserServiceImp(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void saveUser(User user) {
+        user.setPassword(getEncodedPassword(user));
         userDao.save(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        if(user.getPassword().length() == 0) {
+            user.setPassword(userDao.getById(user.getId()).getPassword());
+        } else {
+            user.setPassword(getEncodedPassword(user));
+        }
+        userDao.save(user);
+    }
+
+    private String getEncodedPassword(User user) {
+        return passwordEncoder.encode(user.getPassword());
     }
 
     @Override

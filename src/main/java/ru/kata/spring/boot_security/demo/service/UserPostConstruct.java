@@ -26,14 +26,14 @@ public class UserPostConstruct {
     private void postConstruct() {
         roleService.saveRole(new Role(1L, "ADMIN"));
         roleService.saveRole(new Role(2L, "USER"));
-        userService.saveUser(new User("admin@mail.ru", "$2a$12$piJQL/Gjt/H0IybvwiNcMeHb9kwz6XxuGtQrpSbHvSOpUAJPDhHS2",
+        userService.saveUser(new User("admin@mail.ru", "admin",
                 new ArrayList<>(roleService.findAll()),
                 "Vasya", "Pupkin", 35));
-        userService.saveUser(new User("user@mail.ru", "$2a$12$IKsa6sqRgxdZMbtuVmyHtOZvU0p8nfbuUaWKs8nfCKZw6vSDVGKWO",
+        userService.saveUser(new User("user@mail.ru", "user",
                 roleService.findAll().stream().filter(e -> e.getRoleName()
                         .contains("USER")).collect(Collectors.toList()),
                 "Merlin", "Monroe", 28));
-        userService.saveUser(new User("test@mail.ru", "$2a$12$CXU5aVl1S00bW8LfJ30WMujLybJcjiDIJZD11lnqi6DGYCXV3auyy",
+        userService.saveUser(new User("test@mail.ru", "test",
                 roleService.findAll().stream().filter(e -> e.getRoleName()
                         .contains("USER")).collect(Collectors.toList()),
                 "Test", "Testov", 99));
